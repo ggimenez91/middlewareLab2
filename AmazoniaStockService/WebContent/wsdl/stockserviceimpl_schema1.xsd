@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?><xs:schema xmlns:tns="http://impl.stock.ws/" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://impl.stock.ws/" version="1.0">
+<xs:element name="anularReserva" type="tns:anularReserva"/>
+<xs:element name="anularReservaResponse" type="tns:anularReservaResponse"/>
+<xs:element name="reservarProducto" type="tns:reservarProducto"/>
+<xs:element name="reservarProductoResponse" type="tns:reservarProductoResponse"/>
+<xs:complexType name="anularReserva">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="xs:long"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="anularReservaResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:anulacionReservaResponse"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="anulacionReservaResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="codigo" type="xs:string"/>
+      <xs:element minOccurs="0" name="descripcion" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="reservarProducto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="tns:compras"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="compras">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="compras" nillable="true" type="tns:compra"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="compra">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="cantidad" type="xs:int"/>
+      <xs:element minOccurs="0" name="idProducto" type="xs:long"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="reservarProductoResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:reservaResponse"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="reservaResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="codigo" type="xs:string"/>
+      <xs:element minOccurs="0" name="descripcion" type="xs:string"/>
+      <xs:element minOccurs="0" name="idReserva" type="xs:long"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

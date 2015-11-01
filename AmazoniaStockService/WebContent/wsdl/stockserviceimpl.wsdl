@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="StockServiceImplService" targetNamespace="http://impl.stock.ws/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://impl.stock.ws/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <wsdl:types>
+    <schema xmlns="http://www.w3.org/2001/XMLSchema">
+  <import namespace="http://impl.stock.ws/" schemaLocation="stockserviceimpl_schema1.xsd"/>
+</schema>
+  </wsdl:types>
+  <wsdl:message name="reservarProductoResponse">
+    <wsdl:part name="parameters" element="tns:reservarProductoResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="anularReservaResponse">
+    <wsdl:part name="parameters" element="tns:anularReservaResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="anularReserva">
+    <wsdl:part name="parameters" element="tns:anularReserva">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="reservarProducto">
+    <wsdl:part name="parameters" element="tns:reservarProducto">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="StockServiceApi">
+    <wsdl:operation name="anularReserva">
+      <wsdl:input name="anularReserva" message="tns:anularReserva">
+    </wsdl:input>
+      <wsdl:output name="anularReservaResponse" message="tns:anularReservaResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="reservarProducto">
+      <wsdl:input name="reservarProducto" message="tns:reservarProducto">
+    </wsdl:input>
+      <wsdl:output name="reservarProductoResponse" message="tns:reservarProductoResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="StockServiceImplServiceSoapBinding" type="tns:StockServiceApi">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="anularReserva">
+      <soap:operation soapAction="urn:AnularReserva" style="document"/>
+      <wsdl:input name="anularReserva">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="anularReservaResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="reservarProducto">
+      <soap:operation soapAction="urn:ReservarProducto" style="document"/>
+      <wsdl:input name="reservarProducto">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="reservarProductoResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="StockServiceImplService">
+    <wsdl:port name="StockServiceImplPort" binding="tns:StockServiceImplServiceSoapBinding">
+      <soap:address location="http://localhost:8180/AmazoniaStockService/services"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
