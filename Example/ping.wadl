@@ -1,0 +1,21 @@
+<application xmlns="http://wadl.dev.java.net/2009/02">
+   <doc xml:lang="en" title="http://localhost:8080"/>
+   <resources base="http://localhost:8080">
+      <resource path="PagosYa/Pagos/Pagos/ping" id="Ping">
+         <doc xml:lang="en" title="Ping"/>
+         <method name="GET" id="Ping">
+            <doc xml:lang="en" title="Ping"/>
+            <request/>
+            <response status="200">
+               <representation mediaType="application/json" element="ping:Response" xmlns:ping="http://localhost/PagosYa/Pagos/Pagos/ping"/>
+            </response>
+            <response status="0">
+               <representation mediaType="" element="data"/>
+               <representation mediaType="" element="data"/>
+               <representation mediaType="" element="data"/>
+               <representation mediaType="" element="data"/>
+            </response>
+         </method>
+      </resource>
+   </resources>
+</application>
