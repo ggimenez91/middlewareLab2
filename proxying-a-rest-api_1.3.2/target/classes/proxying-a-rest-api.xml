@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:json="http://www.mulesoft.org/schema/mule/json" xmlns:cxf="http://www.mulesoft.org/schema/mule/cxf" xmlns:metadata="http://www.mulesoft.org/schema/mule/metadata"  xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:spring="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/cxf http://www.mulesoft.org/schema/mule/cxf/current/mule-cxf.xsd
+http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd">
+    <http:listener-config doc:name="HTTP Listener Configuration" host="localhost" name="HTTP_Listener_Configuration" port="8081"/>
+    <http:request-config name="HTTP_Request_PagosYa" host="localhost" port="8080" doc:name="HTTP Request Configuration"/>
+    <flow name="proxying-a-rest-apiFlow">
+        <cxf:jaxws-service doc:name="CXF"/>
+        <json:xml-to-json-transformer doc:name="XML to JSON" returnClass="edu.fing.middleware.Pago"/>
+        <http:request config-ref="HTTP_Request_PagosYa" path="/PagosYa/Pagos/Pagos/pagos" method="POST" source="#[message.payload]" target="#[message.payload]" metadata:id="db4772cc-07b1-4316-8ed8-ad09d97e424f" doc:name="HTTP_PagosYa">
+            <http:request-builder>
+                <http:header headerName="Content-Type" value="application/json"/>
+            </http:request-builder>
+        </http:request>
+        <json:json-to-xml-transformer doc:name="JSON to XML"/>
+    </flow>
+    
+<!-- 	<flow name="rest-api-proxy"> -->
+<!-- 		<http:listener config-ref="HTTP_Listener_Configuration" doc:name="Receive HTTP requests from apps" path="/*"> -->
+<!--             <http:error-response-builder> -->
+<!--                 <http:header headerName="Content-Type" value="application/json"/> -->
+<!--             </http:error-response-builder> -->
+<!--         </http:listener> -->
+<!--         <http:request config-ref="HTTP_Request_PagosYa" path="/PagosYa/Pagos/Pagos/pagos" method="POST" source="#[message.payload]" target="#[message.payload]" metadata:id="db4772cc-07b1-4316-8ed8-ad09d97e424f" doc:name="HTTP"> -->
+<!--             <http:request-builder> -->
+<!--                 <http:header headerName="Content-Type" value="application/json"/> -->
+<!--             </http:request-builder> -->
+<!--         </http:request> -->
+<!-- 	</flow> -->
+</mule>
