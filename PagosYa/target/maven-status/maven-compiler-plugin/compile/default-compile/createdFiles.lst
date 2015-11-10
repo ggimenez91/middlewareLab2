@@ -1,0 +1,4 @@
+edu\fing\middleware\entities\Respuesta.class
+edu\fing\middleware\Pagos.class
+edu\fing\middleware\entities\PagoYa.class
+edu\fing\middleware\entities\Pago.class

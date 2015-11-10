@@ -1,20 +1,15 @@
 package edu.fing.middleware.entities;
 
-import java.util.List;
-
-import javax.xml.bind.annotation.XmlRootElement;
-
-//@XmlRootElement
 public class PagoYa {
 
-	private List<Pago> pagos;
+	private Pago pago;
 
-	public List<Pago> getPagos() {
-		return pagos;
+	public Pago getPago() {
+		return pago;
 	}
 
-	public void setPagos(List<Pago> pagos) {
-		this.pagos = pagos;
+	public void setPago(Pago pago) {
+		this.pago = pago;
 	}
 	
 	

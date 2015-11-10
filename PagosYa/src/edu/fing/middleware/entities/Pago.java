@@ -2,9 +2,6 @@ package edu.fing.middleware.entities;
 
 import java.util.Date;
 
-import javax.xml.bind.annotation.XmlElement;
-
-
 public class Pago {
 
 	private Long idCompra;
