@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="RecepcionOrdenesCompraService" targetNamespace="http://composicion.middleware/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://composicion.middleware/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <wsdl:types>
+    <schema xmlns="http://www.w3.org/2001/XMLSchema">
+  <import namespace="http://composicion.middleware/" schemaLocation="recepcionordenescompra_schema1.xsd"/>
+</schema>
+  </wsdl:types>
+  <wsdl:message name="RecibirOrdenResponse">
+    <wsdl:part name="parameters" element="tns:RecibirOrdenResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="RecibirOrden">
+    <wsdl:part name="parameters" element="tns:RecibirOrden">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="RecepcionOrdenesCompraInterfaz">
+    <wsdl:operation name="RecibirOrden">
+      <wsdl:input name="RecibirOrden" message="tns:RecibirOrden">
+    </wsdl:input>
+      <wsdl:output name="RecibirOrdenResponse" message="tns:RecibirOrdenResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="RecepcionOrdenesCompraServiceSoapBinding" type="tns:RecepcionOrdenesCompraInterfaz">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="RecibirOrden">
+      <soap:operation soapAction="urn:RecibirOrden" style="document"/>
+      <wsdl:input name="RecibirOrden">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="RecibirOrdenResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="RecepcionOrdenesCompraService">
+    <wsdl:port name="RecepcionOrdenesCompraPort" binding="tns:RecepcionOrdenesCompraServiceSoapBinding">
+      <soap:address location="http://localhost:8080/ComposicionServicios/services/RecepcionOrdenesCompraPort"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
