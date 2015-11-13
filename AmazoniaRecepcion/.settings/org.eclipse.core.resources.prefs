@@ -1,4 +1,10 @@
 eclipse.preferences.version=1
+encoding//src/edu/middleware/servicios/pagosya/Invoke.java=UTF-8
+encoding//src/edu/middleware/servicios/pagosya/InvokeResponse.java=UTF-8
+encoding//src/edu/middleware/servicios/pagosya/PagosService.java=UTF-8
+encoding//src/edu/middleware/servicios/pagosya/PagosServiceLocator.java=UTF-8
+encoding//src/edu/middleware/servicios/pagosya/PagosServiceSoapBindingStub.java=UTF-8
+encoding//src/edu/middleware/servicios/pagosya/ProxyServicePortType.java=UTF-8
 encoding//src/ws/stock/impl/AnulacionReservaResponse.java=UTF-8
 encoding//src/ws/stock/impl/Compra.java=UTF-8
 encoding//src/ws/stock/impl/ReservaResponse.java=UTF-8
