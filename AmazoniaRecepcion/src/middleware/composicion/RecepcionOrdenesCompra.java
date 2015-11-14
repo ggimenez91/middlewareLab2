@@ -2,25 +2,13 @@ package middleware.composicion;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
-import javax.jws.HandlerChain;
 import javax.jws.WebService;
 import javax.xml.rpc.ServiceException;
 
-import org.apache.cxf.endpoint.Endpoint;
-import org.apache.cxf.endpoint.Server;
-import org.apache.cxf.frontend.ServerFactoryBean;
-import org.apache.cxf.jaxws.JaxWsServerFactoryBean;
-import org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor;
-
-import edu.middleware.servicios.pagosya.PagosServiceLocator;
-import edu.middleware.servicios.pagosya.ProxyServicePortType;
 import ws.stock.impl.Compra;
 import ws.stock.impl.ReservaResponse;
 import ws.stock.impl.StockServiceApi;
-import ws.stock.impl.StockServiceImplServiceLocator;
 
 //@HandlerChain(file = "handler-chain.xml")
 @WebService(targetNamespace = "http://composicion.middleware/", endpointInterface = "middleware.composicion.RecepcionOrdenesCompraInterfaz", portName = "RecepcionOrdenesCompraPort", serviceName = "RecepcionOrdenesCompraService")
