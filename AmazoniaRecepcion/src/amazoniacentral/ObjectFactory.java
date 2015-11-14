@@ -24,7 +24,11 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
-    private final static QName _EnviarColaMensaje_QNAME = new QName("http://amazoniacentral/", "EnviarColaMensaje");
+    private final static QName _ObtenerStockResponseResponse_QNAME = new QName("http://amazoniacentral/", "obtenerStockResponseResponse");
+	private final static QName _ObtenerStockResponse_QNAME = new QName("http://amazoniacentral/", "obtenerStockResponse");
+	private final static QName _ConsultarStock_QNAME = new QName("http://amazoniacentral/", "consultarStock");
+	private final static QName _ConsultarStockResponse_QNAME = new QName("http://amazoniacentral/", "consultarStockResponse");
+	private final static QName _EnviarColaMensaje_QNAME = new QName("http://amazoniacentral/", "EnviarColaMensaje");
     private final static QName _JMSException_QNAME = new QName("http://amazoniacentral/", "JMSException");
     private final static QName _EnviarColaMensajeResponse_QNAME = new QName("http://amazoniacentral/", "EnviarColaMensajeResponse");
 
@@ -36,6 +40,90 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link ObtenerStockResponse }
+     * 
+     */
+    public ObtenerStockResponse createObtenerStockResponse() {
+        return new ObtenerStockResponse();
+    }
+
+	/**
+     * Create an instance of {@link ObtenerStockResponseResponse }
+     * 
+     */
+    public ObtenerStockResponseResponse createObtenerStockResponseResponse() {
+        return new ObtenerStockResponseResponse();
+    }
+
+	/**
+     * Create an instance of {@link ConfirmacionResponse }
+     * 
+     */
+    public ConfirmacionResponse createConfirmacionResponse() {
+        return new ConfirmacionResponse();
+    }
+
+	/**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ObtenerStockResponseResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://amazoniacentral/", name = "obtenerStockResponseResponse")
+    public JAXBElement<ObtenerStockResponseResponse> createObtenerStockResponseResponse(ObtenerStockResponseResponse value) {
+        return new JAXBElement<ObtenerStockResponseResponse>(_ObtenerStockResponseResponse_QNAME, ObtenerStockResponseResponse.class, null, value);
+    }
+
+	/**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ObtenerStockResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://amazoniacentral/", name = "obtenerStockResponse")
+    public JAXBElement<ObtenerStockResponse> createObtenerStockResponse(ObtenerStockResponse value) {
+        return new JAXBElement<ObtenerStockResponse>(_ObtenerStockResponse_QNAME, ObtenerStockResponse.class, null, value);
+    }
+
+	/**
+     * Create an instance of {@link ConsultarStock }
+     * 
+     */
+    public ConsultarStock createConsultarStock() {
+        return new ConsultarStock();
+    }
+
+	/**
+     * Create an instance of {@link ConsultarStockResponse }
+     * 
+     */
+    public ConsultarStockResponse createConsultarStockResponse() {
+        return new ConsultarStockResponse();
+    }
+
+	/**
+     * Create an instance of {@link Compra }
+     * 
+     */
+    public Compra createCompra() {
+        return new Compra();
+    }
+
+	/**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ConsultarStock }{@code >}}
+     * 
+     */
+//    @XmlElementDecl(namespace = "http://amazoniacentral/", name = "consultarStock")
+    public JAXBElement<ConsultarStock> createConsultarStock(ConsultarStock value) {
+        return new JAXBElement<ConsultarStock>(_ConsultarStock_QNAME, ConsultarStock.class, null, value);
+    }
+
+	/**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ConsultarStockResponse }{@code >}}
+     * 
+     */
+//    @XmlElementDecl(namespace = "http://amazoniacentral/", name = "consultarStockResponse")
+    public JAXBElement<ConsultarStockResponse> createConsultarStockResponse(ConsultarStockResponse value) {
+        return new JAXBElement<ConsultarStockResponse>(_ConsultarStockResponse_QNAME, ConsultarStockResponse.class, null, value);
+    }
+
+	/**
      * Create an instance of {@link EnviarColaMensaje }
      * 
      */
@@ -63,7 +151,7 @@ public class ObjectFactory {
      * Create an instance of {@link JAXBElement }{@code <}{@link EnviarColaMensaje }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://amazoniacentral/", name = "EnviarColaMensaje")
+//    @XmlElementDecl(namespace = "http://amazoniacentral/", name = "EnviarColaMensaje")
     public JAXBElement<EnviarColaMensaje> createEnviarColaMensaje(EnviarColaMensaje value) {
         return new JAXBElement<EnviarColaMensaje>(_EnviarColaMensaje_QNAME, EnviarColaMensaje.class, null, value);
     }
@@ -72,7 +160,7 @@ public class ObjectFactory {
      * Create an instance of {@link JAXBElement }{@code <}{@link JMSException }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://amazoniacentral/", name = "JMSException")
+//    @XmlElementDecl(namespace = "http://amazoniacentral/", name = "JMSException")
     public JAXBElement<JMSException> createJMSException(JMSException value) {
         return new JAXBElement<JMSException>(_JMSException_QNAME, JMSException.class, null, value);
     }
@@ -81,7 +169,7 @@ public class ObjectFactory {
      * Create an instance of {@link JAXBElement }{@code <}{@link EnviarColaMensajeResponse }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://amazoniacentral/", name = "EnviarColaMensajeResponse")
+//    @XmlElementDecl(namespace = "http://amazoniacentral/", name = "EnviarColaMensajeResponse")
     public JAXBElement<EnviarColaMensajeResponse> createEnviarColaMensajeResponse(EnviarColaMensajeResponse value) {
         return new JAXBElement<EnviarColaMensajeResponse>(_EnviarColaMensajeResponse_QNAME, EnviarColaMensajeResponse.class, null, value);
     }
