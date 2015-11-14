@@ -98,5 +98,7 @@ http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/fil
         <cxf:jaxws-service doc:name="CXF" serviceClass="amazoniacentral.StockResponse"/>
         <component class="amazoniacentral.StockResponse" doc:name="Java"/>
     </flow>
+	
+	
     
 </mule>
