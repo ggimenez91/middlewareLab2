@@ -31,6 +31,12 @@ http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/fil
     <ws:consumer-config name="Web_Service_Consumer" wsdlLocation="http://localhost:8383/AmazoniaStockService/services/stockservice?wsdl" service="StockServiceImplService" port="StockServiceImplPort" serviceAddress="http://localhost:8383/AmazoniaStockService/services/stockservice" doc:name="Web Service Consumer"/>
     <http:request-config name="HTTP_Request_Configuration" host="localhost" port="8383" basePath="/AmazoniaStockService" doc:name="HTTP Request Configuration"/>
     <file:connector name="File"  autoDelete="false" streaming="true" validateConnections="true" doc:name="File" outputAppend="true"/>
+    
+    <http:listener-config name="listener-config2" host="localhost" port="63081" doc:name="HTTP Listener Configuration"/>
+	<custom-transformer name="CompraACsv" class="amazoniacentral.CompraACsv" doc:name="Java"/>    
+    <http:listener-config doc:name="HTTP Listener Configuration" host="0.0.0.0" name="HTTP_Listener_Configuration2" port="8081"/>
+   
+    <http:request-config doc:name="HTTP Request Configuration" host="www.predic8.com" name="HTTP_Request_Configuration2" port="8080"/>
     <flow name="servicioPagosYa">
     	<http:listener config-ref="HTTP_Listener_Configuration" doc:name="HTTP" path="/*" />
         <cxf:proxy-service doc:name="CXF" namespace="http://servicios.middleware.edu/pagosya" payload="body" port="PagosPort" service="PagosService" />
@@ -42,8 +48,7 @@ http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/fil
         </http:request>
         <json:json-to-xml-transformer returnClass="java.lang.String" mimeType="application/xml" doc:name="JSON to XML"/>
     </flow>
-
-	<flow name="Publisher">
+    <flow name="Publisher">
 		<http:listener config-ref="listener-config" path="activemq" doc:name="HTTP"/>
 		<cxf:jaxws-service serviceClass="amazoniacentral.EnvioJMS" doc:name="CXF"/>
 		<component class="amazoniacentral.EnvioJMS" doc:name="Java"/>
@@ -51,7 +56,6 @@ http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/fil
             <jms:transaction action="NOT_SUPPORTED"/>
         </jms:outbound-endpoint>
 	</flow>
-
     <flow name="SuscriberAnularReservaStock" initialState="started">
         <jms:inbound-endpoint topic="ActiveMQ" connector-ref="ActiveMQ" doc:name="JMS">
             <jms:transaction action="NOT_SUPPORTED"/>
@@ -80,13 +84,7 @@ http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/fil
             </processor-chain>
         </scatter-gather>
     </flow>
-    
-    <http:listener-config name="listener-config2" host="localhost" port="63081" doc:name="HTTP Listener Configuration"/>
-	<custom-transformer name="CompraACsv" class="amazoniacentral.CompraACsv" doc:name="Java"/>    
-    <http:listener-config doc:name="HTTP Listener Configuration" host="0.0.0.0" name="HTTP_Listener_Configuration2" port="8081"/>
-   
-    <http:request-config doc:name="HTTP Request Configuration" host="www.predic8.com" name="HTTP_Request_Configuration2" port="8080"/>
-    <flow name="helloService">
+    <flow name="reservaEPuerto">
         <http:listener config-ref="listener-config" path="ConsultaStock" doc:name="HTTP"/>
         <cxf:jaxws-service serviceClass="amazoniacentral.ConsultaStock" doc:name="CXF">
                 
@@ -95,7 +93,7 @@ http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/fil
         <component class="amazoniacentral.ConsultaStock" doc:name="Java"/>
         <file:outbound-endpoint path="C:\ePuerto\Recepcion" outputPattern="#[flowVars.idCompra].csv" responseTimeout="10000" transformer-refs="CompraACsv" doc:name="File"/>
     </flow>
-    <flow name="tarea2.2Flow">
+    <flow name="obtenerRespuestaEPuerto">
         <http:listener config-ref="listener-config" path="ResponseStock" doc:name="HTTP"/>
         <cxf:jaxws-service doc:name="CXF" serviceClass="amazoniacentral.StockResponse"/>
         <component class="amazoniacentral.StockResponse" doc:name="Java"/>
