@@ -45,7 +45,10 @@ http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/fil
         <http:request config-ref="HTTP_Request_PagosYa" path="/PagosYa/Pagos/Pagos/pagos" method="POST" source="#[message.payload]" target="#[message.payload]"  doc:name="HTTP_PagosYa">
             <http:request-builder>
                 <http:header headerName="Content-Type" value="application/json"/>
+
             </http:request-builder>
+            <http:success-status-code-validator values="200,400"/>
+
         </http:request>
         <json:json-to-xml-transformer returnClass="java.lang.String" mimeType="application/xml" doc:name="JSON to XML"/>
     </flow>
