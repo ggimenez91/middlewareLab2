@@ -9,6 +9,6 @@
 	<classpathentry kind="src" output="target/test-classes" path="src/test/resources"/>
 	<classpathentry kind="src" path="src/main/api"/>
 	<classpathentry kind="src" path="mappings"/>
-	<classpathentry kind="lib" path="C:/Users/Juan/Downloads/apache-activemq-5.9.0/activemq-all-5.9.0.jar"/>
+	<classpathentry kind="lib" path="C:/apache-activemq-5.12.0/activemq-all-5.12.0.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
