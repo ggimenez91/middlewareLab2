@@ -27,17 +27,14 @@ import ws.stock.impl.StockServiceImplServiceLocator;
 public class RecepcionOrdenesCompra implements RecepcionOrdenesCompraInterfaz {
 	
 	public void RecibirOrden (String idCompra,Long nroTarjeta, ArrayList<LineaOrdenCompra> productos) throws ServiceException{
-		
-		
-		ServerFactoryBean factory = new JaxWsServerFactoryBean();
+			
+		/*ServerFactoryBean factory = new JaxWsServerFactoryBean();
 		Server server = factory.create();
 		Endpoint cxfEndpoint = server.getEndpoint();
 		Map<String,Object> inProps = new HashMap<String,Object>();	 
 		WSS4JInInterceptor wssIn = new WSS4JInInterceptor(inProps);
 		cxfEndpoint.getInInterceptors().add(wssIn);
-		
-		
-		
+		*/
 		
 		System.out.println("OK");
 		// Llamo a servicio de stock local
@@ -64,8 +61,8 @@ public class RecepcionOrdenesCompra implements RecepcionOrdenesCompraInterfaz {
 		}
 		
 		// Llamo al servio de pagos
-		PagosServiceLocator locatorPagos = new PagosServiceLocator();
-		ProxyServicePortType servicioPagos = locatorPagos.getPagosPort();
+		//PagosServiceLocator locatorPagos = new PagosServiceLocator();
+		//ProxyServicePortType servicioPagos = locatorPagos.getPagosPort();
 		//servicioPagos.invoke();
 		
 	}

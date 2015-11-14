@@ -19,7 +19,7 @@
 			<bean class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
 		        <constructor-arg>
 		            <map>
-		                <entry key="action" value="Encrypt"/>
+		                <entry key="action" value="Signature"/>
 		                <entry key="signaturePropFile" value="server-crypto.properties"/>
 		                <!-- entry key="passwordCallbackClass" value="..."/-->
 		           </map>
