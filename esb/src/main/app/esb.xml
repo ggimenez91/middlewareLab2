@@ -30,7 +30,7 @@ http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/fil
     </jms:endpoint>
     <ws:consumer-config name="Web_Service_Consumer" wsdlLocation="http://localhost:8080/AmazoniaStockService/services/stockservice?wsdl" service="StockServiceImplService" port="StockServiceImplPort" serviceAddress="http://localhost:8080/AmazoniaStockService/services/stockservice" doc:name="Web Service Consumer"/>
     <http:request-config name="HTTP_Request_Configuration" host="localhost" port="8080" basePath="/AmazoniaStockService" doc:name="HTTP Request Configuration"/>
-    <file:connector name="File"  autoDelete="false" streaming="true" validateConnections="true" doc:name="File" outputAppend="true"/>
+    <file:connector name="File"  autoDelete="true" streaming="true" validateConnections="true" doc:name="File" />
     
     <http:listener-config name="listenerRespuestaEpuerto" host="localhost" port="63082" doc:name="HTTP Listener Configuration"/>
 	<custom-transformer name="CompraACsv" class="amazoniacentral.CompraACsv" doc:name="Java"/>
@@ -40,17 +40,23 @@ http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/fil
     <http:listener-config name="listenerReservaEpuerto" host="localhost" port="63083" doc:name="HTTP Listener Configuration"/>
     <flow name="servicioPagosYa">
     	<http:listener config-ref="listenerPagosYA" doc:name="HTTP" path="/*" />
-        <cxf:proxy-service doc:name="CXF" namespace="http://servicios.middleware.edu/pagosya" payload="body" port="PagosPort" service="PagosService" />
-        <json:xml-to-json-transformer returnClass="java.lang.String" mimeType="application/json" doc:name="XML to JSON"/>
+        <cxf:jaxws-service serviceClass="esb.ServicioPago" doc:name="CXF"/>
+        <!-- cxf:proxy-service doc:name="CXF" namespace="http://servicios.middleware.edu/pagosya" payload="body" port="PagosPort" service="PagosService" serviceClass="esb.ServicioPago"/-->
+        <component class="esb.ServicioPago" doc:name="Java"/>
+
         <http:request config-ref="HTTP_Request_PagosYa" path="/PagosYa/Pagos/Pagos/pagos" method="POST" source="#[message.payload]" target="#[message.payload]"  doc:name="HTTP_PagosYa">
             <http:request-builder>
                 <http:header headerName="Content-Type" value="application/json"/>
+
 
             </http:request-builder>
             <http:success-status-code-validator values="200,400"/>
 
         </http:request>
-        <json:json-to-xml-transformer returnClass="java.lang.String" mimeType="application/xml" doc:name="JSON to XML"/>
+        <echo-component doc:name="Echo"/>
+        <json:json-to-xml-transformer doc:name="JSON to XML"/>
+        <echo-component doc:name="Echo"/>
+
     </flow>
     <flow name="Publisher">
 		<http:listener config-ref="listenerPublisher" path="activemq" doc:name="HTTP"/>
@@ -94,8 +100,9 @@ http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/fil
                 
         </cxf:jaxws-service>
         <set-variable variableName="idCompra" value="#[message.payload.idCompra]" doc:name="Variable"/>
+        <set-variable variableName="idProducto" value="#[message.payload.idProducto]" doc:name="Variable"/>
         <component class="amazoniacentral.ConsultaStock" doc:name="Java"/>
-        <file:outbound-endpoint path="C:\ePuerto\Recepcion" outputPattern="#[flowVars.idCompra].csv" responseTimeout="10000" transformer-refs="CompraACsv" doc:name="File"/>
+        <file:outbound-endpoint path="C:\ePuerto\Recepcion" outputPattern="#[flowVars.idCompra]-#[flowVars.idProducto].csv" responseTimeout="10000" transformer-refs="CompraACsv" doc:name="File" connector-ref="File"/>
     </flow>
     <flow name="obtenerRespuestaEPuerto">
         <http:listener config-ref="listenerRespuestaEpuerto" path="ResponseStock" doc:name="HTTP"/>

@@ -15,8 +15,8 @@ public class StockResponse {
 	private String confirmacionFolder = "C:"+fileSeparator+"ePuerto"+fileSeparator+"Confirmacion";
 	
 	@WebMethod
-	public ConfirmacionResponse obtenerStockResponse(String idCompra) {
-		String csvFile = confirmacionFolder+fileSeparator+idCompra+".csv";
+	public ConfirmacionResponse obtenerStockResponse(String idCompra, String idProducto) {
+		String csvFile = confirmacionFolder+fileSeparator+idCompra+"-"+idProducto+".csv";
 		System.out.println("Inicio Ejecucion");
 		System.out.println(csvFile);
 		BufferedReader br = null;
