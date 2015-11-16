@@ -67,7 +67,7 @@ public class ObjectFactory {
      * Create an instance of {@link JAXBElement }{@code <}{@link ConsultarStock }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://amazoniacentral/", name = "consultarStock")
+//    @XmlElementDecl(namespace = "http://amazoniacentral/", name = "consultarStock")
     public JAXBElement<ConsultarStock> createConsultarStock(ConsultarStock value) {
         return new JAXBElement<ConsultarStock>(_ConsultarStock_QNAME, ConsultarStock.class, null, value);
     }
@@ -76,7 +76,7 @@ public class ObjectFactory {
      * Create an instance of {@link JAXBElement }{@code <}{@link ConsultarStockResponse }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://amazoniacentral/", name = "consultarStockResponse")
+//    @XmlElementDecl(namespace = "http://amazoniacentral/", name = "consultarStockResponse")
     public JAXBElement<ConsultarStockResponse> createConsultarStockResponse(ConsultarStockResponse value) {
         return new JAXBElement<ConsultarStockResponse>(_ConsultarStockResponse_QNAME, ConsultarStockResponse.class, null, value);
     }
@@ -110,7 +110,8 @@ public class ObjectFactory {
      * 
      */
 //    @XmlElementDecl(namespace = "http://amazoniacentral/", name = "obtenerStockResponseResponse")
-    public JAXBElement<ObtenerStockResponseResponse> createObtenerStockResponseResponse(ObtenerStockResponseResponse value) {
+    @XmlElementDecl(namespace = "http://amazoniacentral/", name = "obtenerStockResponseResponse")
+	public JAXBElement<ObtenerStockResponseResponse> createObtenerStockResponseResponse(ObtenerStockResponseResponse value) {
         return new JAXBElement<ObtenerStockResponseResponse>(_ObtenerStockResponseResponse_QNAME, ObtenerStockResponseResponse.class, null, value);
     }
 
@@ -119,7 +120,8 @@ public class ObjectFactory {
      * 
      */
 //    @XmlElementDecl(namespace = "http://amazoniacentral/", name = "obtenerStockResponse")
-    public JAXBElement<ObtenerStockResponse> createObtenerStockResponse(ObtenerStockResponse value) {
+    @XmlElementDecl(namespace = "http://amazoniacentral/", name = "obtenerStockResponse")
+	public JAXBElement<ObtenerStockResponse> createObtenerStockResponse(ObtenerStockResponse value) {
         return new JAXBElement<ObtenerStockResponse>(_ObtenerStockResponse_QNAME, ObtenerStockResponse.class, null, value);
     }
 
