@@ -104,6 +104,13 @@ public class RecepcionOrdenesCompra implements RecepcionOrdenesCompraInterfaz {
 					consultaStock.consultarStock(compraePuer);
 					ePuertoResponse = stockResponseEPuerto.obtenerStockResponse(compraePuer.getIdCompra(),String.valueOf(compraePuer.getIdProducto()));
 					if(ePuertoResponse.getCodResultado() != 0){
+						
+						
+						//ERROR CONSUMO WEBSERVICES
+						RespuestaDelServidorService servCall = new RespuestaDelServidorService();
+						RespuestaDelServidor respuesta = servCall.getRespuestaDelServidorPort();
+						respuesta.metodoAsincResponse("ERROR");
+						
 						break; //tengo que retornar que no se pudo comprar xq no hay stock
 					} else {				
 				        
@@ -119,11 +126,18 @@ public class RecepcionOrdenesCompra implements RecepcionOrdenesCompraInterfaz {
 						if ( idComp == null || idComp.isEmpty()) {
 							EnvioJMSService locatorEnvioAnulacion = new EnvioJMSService();
 							EnvioJMS envioJms = locatorEnvioAnulacion.getEnvioJMSPort();
+							
+							//ERROR CONSUMO WEBSERVICES
+							RespuestaDelServidorService servCall = new RespuestaDelServidorService();
+							RespuestaDelServidor respuesta = servCall.getRespuestaDelServidorPort();
+							respuesta.metodoAsincResponse("ERROR");
+							
+							
 							try {
 								envioJms.enviarColaMensaje(Long.valueOf(ePuertoResponse.getIdReserva()));
 								//aca va lo que dio vacio o error
 							} catch (Exception e) {
-								//TODO 
+								
 							}
 						}
 						else
@@ -148,6 +162,12 @@ public class RecepcionOrdenesCompra implements RecepcionOrdenesCompraInterfaz {
 				String idComp = obtenerIdCompra("confirmacionPago",response);
 				
 				if (idComp == null || idComp.isEmpty()) {
+					
+					//ERROR CONSUMO WEBSERVICES
+					RespuestaDelServidorService servCall = new RespuestaDelServidorService();
+					RespuestaDelServidor respuesta = servCall.getRespuestaDelServidorPort();
+					respuesta.metodoAsincResponse("ERROR");
+					
 					EnvioJMSService locatorEnvioAnulacion = new EnvioJMSService();
 					EnvioJMS envioJms = locatorEnvioAnulacion.getEnvioJMSPort();
 					try {
@@ -155,10 +175,7 @@ public class RecepcionOrdenesCompra implements RecepcionOrdenesCompraInterfaz {
 						//aca va lo que dio vacio o error
 					} catch (Exception e) {
 
-						//ERROR CONSUMO WEBSERVICES
-						RespuestaDelServidorService servCall = new RespuestaDelServidorService();
-						RespuestaDelServidor respuesta = servCall.getRespuestaDelServidorPort();
-						respuesta.metodoAsincResponse("ERROR");
+						//ERROR CONSUMO WEBSERVICES						
 					}
 				}
 				else
