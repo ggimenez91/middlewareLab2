@@ -27,7 +27,8 @@ import amazoniacentral.EnvioJMS;
 import amazoniacentral.EnvioJMSService;
 import amazoniacentral.StockResponse;
 import amazoniacentral.StockResponseService;
-
+import cliente.callback.RespuestaDelServidor;
+import cliente.callback.RespuestaDelServidorService;
 import esb.ServicioPago;
 import esb.ServicioPagoPortImpl;
 import esb.ServicioPagosESB;
@@ -127,9 +128,11 @@ public class RecepcionOrdenesCompra implements RecepcionOrdenesCompraInterfaz {
 						}
 						else
 						{	
-							//Retornar el OK a el llamado
-//							ClaseAsincService asincService = new ClaseAsincService();
-//							ClaseAsingPortImpl port = asincService.getClaseAsincPort(features)
+							
+							RespuestaDelServidorService servCall = new RespuestaDelServidorService();
+							RespuestaDelServidor respuesta = servCall.getRespuestaDelServidorPort();
+							respuesta.metodoAsincResponse("OK");
+							
 						}
 						
 						
@@ -151,12 +154,20 @@ public class RecepcionOrdenesCompra implements RecepcionOrdenesCompraInterfaz {
 						envioJms.enviarColaMensaje(Long.valueOf(resultadoStockLocal.getIdReserva()));
 						//aca va lo que dio vacio o error
 					} catch (Exception e) {
-						//TODO 
+
+						//ERROR CONSUMO WEBSERVICES
+						RespuestaDelServidorService servCall = new RespuestaDelServidorService();
+						RespuestaDelServidor respuesta = servCall.getRespuestaDelServidorPort();
+						respuesta.metodoAsincResponse("ERROR");
 					}
 				}
 				else
 				{	
-					//Retornar el OK a el llamado
+					
+					//ERROR CONSUMO WEBSERVICES
+					RespuestaDelServidorService servCall = new RespuestaDelServidorService();
+					RespuestaDelServidor respuesta = servCall.getRespuestaDelServidorPort();
+					respuesta.metodoAsincResponse("OK");
 					
 				}
 				
@@ -224,7 +235,12 @@ public class RecepcionOrdenesCompra implements RecepcionOrdenesCompraInterfaz {
 					}
 					else {
 						 System.out.println( "NO encontro") ;
+						//ERROR CONSUMO WEBSERVICES
+						RespuestaDelServidorService servCall = new RespuestaDelServidorService();
+						RespuestaDelServidor respuesta = servCall.getRespuestaDelServidorPort();
+						respuesta.metodoAsincResponse("ERROR");
 						throw new Exception("Etiqueta no econtrada/error matcher find");
+						
 					}
 				}
 					
@@ -233,6 +249,10 @@ public class RecepcionOrdenesCompra implements RecepcionOrdenesCompraInterfaz {
 				
 			catch (Exception e) {
 			
+				//ERROR CONSUMO WEBSERVICES
+				RespuestaDelServidorService servCall = new RespuestaDelServidorService();
+				RespuestaDelServidor respuesta = servCall.getRespuestaDelServidorPort();
+				respuesta.metodoAsincResponse("ERROR");
 				System.out.println( e.getMessage());
 				return e.getMessage();
 			}
