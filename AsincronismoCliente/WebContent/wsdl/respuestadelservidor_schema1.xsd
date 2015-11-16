@@ -1,0 +1,17 @@
+<xs:schema xmlns:tns="http://callback.cliente/" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" targetNamespace="http://callback.cliente/" version="1.0">
+
+  <xs:element name="metodoAsincResponse" type="tns:metodoAsincResponse"/>
+
+  <xs:element name="metodoAsincResponseResponse" type="tns:metodoAsincResponseResponse"/>
+
+  <xs:complexType name="metodoAsincResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="metodoAsincResponseResponse">
+    <xs:sequence/>
+  </xs:complexType>
+
+</xs:schema>

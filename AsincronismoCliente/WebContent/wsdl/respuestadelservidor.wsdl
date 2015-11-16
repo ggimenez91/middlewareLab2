@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="respuestaDelServidorService" targetNamespace="http://callback.cliente/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://callback.cliente/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <wsdl:types>
+<schema xmlns="http://www.w3.org/2001/XMLSchema">
+  <import namespace="http://callback.cliente/" schemaLocation="respuestadelservidor_schema1.xsd"/>
+</schema>
+  </wsdl:types>
+  <wsdl:message name="metodoAsincResponseResponse">
+    <wsdl:part name="parameters" element="tns:metodoAsincResponseResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="metodoAsincResponse">
+    <wsdl:part name="parameters" element="tns:metodoAsincResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="respuestaDelServidor">
+    <wsdl:operation name="metodoAsincResponse">
+      <wsdl:input name="metodoAsincResponse" message="tns:metodoAsincResponse">
+    </wsdl:input>
+      <wsdl:output name="metodoAsincResponseResponse" message="tns:metodoAsincResponseResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="respuestaDelServidorServiceSoapBinding" type="tns:respuestaDelServidor">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="metodoAsincResponse">
+      <soap:operation soapAction="urn:MetodoAsincResponse" style="document"/>
+      <wsdl:input name="metodoAsincResponse">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="metodoAsincResponseResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="respuestaDelServidorService">
+    <wsdl:port name="respuestaDelServidorPort" binding="tns:respuestaDelServidorServiceSoapBinding">
+      <soap:address location="http://localhost:9090/respuestaDelServidorPort"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
