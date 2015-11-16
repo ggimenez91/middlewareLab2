@@ -2,14 +2,22 @@ package middleware.composicion;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.jws.Oneway;
 import javax.jws.WebService;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.rpc.ServiceException;
+
+import org.springframework.scheduling.annotation.Async;
 
 import amazoniacentral.ConfirmacionResponse;
 import amazoniacentral.ConsultaStock;
@@ -19,8 +27,11 @@ import amazoniacentral.EnvioJMS;
 import amazoniacentral.EnvioJMSService;
 import amazoniacentral.StockResponse;
 import amazoniacentral.StockResponseService;
-import edu.middleware.servicios.pagosya.PagosService;
-import edu.middleware.servicios.pagosya.ProxyServicePortType;
+
+import esb.ServicioPago;
+import esb.ServicioPagoPortImpl;
+import esb.ServicioPagosESB;
+
 import ws.stock.impl.Compra;
 import ws.stock.impl.Compras;
 import ws.stock.impl.ReservaResponse;
@@ -29,8 +40,9 @@ import ws.stock.impl.StockServiceImplService;
 
 //@HandlerChain(file = "handler-chain.xml")
 @WebService(targetNamespace = "http://composicion.middleware/", endpointInterface = "middleware.composicion.RecepcionOrdenesCompraInterfaz", portName = "RecepcionOrdenesCompraPort", serviceName = "RecepcionOrdenesCompraService")
+
 public class RecepcionOrdenesCompra implements RecepcionOrdenesCompraInterfaz {
-	
+	@Oneway
 	public void RecibirOrden (String idCompra,Long nroTarjeta, ArrayList<LineaOrdenCompra> productos) throws ServiceException{
 			
 		/*ServerFactoryBean factory = new JaxWsServerFactoryBean();
@@ -89,44 +101,25 @@ public class RecepcionOrdenesCompra implements RecepcionOrdenesCompraInterfaz {
 				
 				for (amazoniacentral.Compra compraePuer: comprasePuerto){
 					consultaStock.consultarStock(compraePuer);
-					ePuertoResponse = stockResponseEPuerto.obtenerStockResponse(compraePuer.getIdCompra());
+					ePuertoResponse = stockResponseEPuerto.obtenerStockResponse(compraePuer.getIdCompra(),String.valueOf(compraePuer.getIdProducto()));
 					if(ePuertoResponse.getCodResultado() != 0){
 						break; //tengo que retornar que no se pudo comprar xq no hay stock
-					} else {
-						// Invoco a servicio de pagos
-						PagosService locatorPagosService = new PagosService();
-						ProxyServicePortType pagosService = locatorPagosService.getPagosPort();
-				
-						StringBuilder sb = new StringBuilder();
-						sb.append("<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:pag=\"http://servicios.middleware.edu/pagosya\">");
-						sb.append("<soapenv:Header/>");
-						sb.append("<soapenv:Body>");
-						sb.append("<pago>");
-						sb.append("<idCompra>");
-						sb.append(idCompra);
-						sb.append("</idCompra>");
-						sb.append("<nroTarjetaCredito>");
-						sb.append(String.valueOf(nroTarjeta));
-						sb.append("</nroTarjetaCredito>");
-						sb.append("<monto>");
-						sb.append(String.valueOf(montoTotal));
-						sb.append("</monto>");
-						sb.append("<fecha>");
-						sb.append(String.valueOf(montoTotal));
-						sb.append("</fecha>");
-						sb.append("</pago>");
-						sb.append("</soapenv:Body>");
-						sb.append("</soapenv:Envelope>");
-						
-						String response = (String) pagosService.invoke(sb.toString());
+					} else {				
 				        
-						String idComp = obtenerIdCompra("confirmacionPago",response);
 						
-						if (!idComp.isEmpty() || idComp == null) {
+						ServicioPagosESB locatorPagosService = new ServicioPagosESB();
+						ServicioPago pagosService = locatorPagosService.getServicioPagoPort();					
+						Calendar cal = GregorianCalendar.getInstance();			            
+						String response  = pagosService.realizarPago(idCompra,nroTarjeta,montoTotal,toXMLGregorianCalendar(cal));
+						
+						String idComp = obtenerIdCompra("confirmacionPago",response);
+						//TODO
+						
+						if ( idComp == null || idComp.isEmpty()) {
 							EnvioJMSService locatorEnvioAnulacion = new EnvioJMSService();
 							EnvioJMS envioJms = locatorEnvioAnulacion.getEnvioJMSPort();
 							try {
-								envioJms.enviarColaMensaje(Long.valueOf(resultadoStockLocal.getIdReserva()));
+								envioJms.enviarColaMensaje(Long.valueOf(ePuertoResponse.getIdReserva()));
 								//aca va lo que dio vacio o error
 							} catch (Exception e) {
 								//TODO 
@@ -134,8 +127,9 @@ public class RecepcionOrdenesCompra implements RecepcionOrdenesCompraInterfaz {
 						}
 						else
 						{	
-							//Aca dio OK
-							
+							//Retornar el OK a el llamado
+//							ClaseAsincService asincService = new ClaseAsincService();
+//							ClaseAsingPortImpl port = asincService.getClaseAsincPort(features)
 						}
 						
 						
@@ -143,35 +137,14 @@ public class RecepcionOrdenesCompra implements RecepcionOrdenesCompraInterfaz {
 				}	
 			} else {
 				// Invoco a servicio de pagos
-				PagosService locatorPagosService = new PagosService();
-				ProxyServicePortType pagosService = locatorPagosService.getPagosPort();
-		
-				StringBuilder sb = new StringBuilder();
-				sb.append("<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:pag=\"http://servicios.middleware.edu/pagosya\">");
-				sb.append("<soapenv:Header/>");
-				sb.append("<soapenv:Body>");
-				sb.append("<pago>");
-				sb.append("<idCompra>");
-				sb.append(idCompra);
-				sb.append("</idCompra>");
-				sb.append("<nroTarjetaCredito>");
-				sb.append(String.valueOf(nroTarjeta));
-				sb.append("</nroTarjetaCredito>");
-				sb.append("<monto>");
-				sb.append(String.valueOf(montoTotal));
-				sb.append("</monto>");
-				sb.append("<fecha>");
-				sb.append(String.valueOf(montoTotal));
-				sb.append("</fecha>");
-				sb.append("</pago>");
-				sb.append("</soapenv:Body>");
-				sb.append("</soapenv:Envelope>");
+				ServicioPagosESB locatorPagosService = new ServicioPagosESB();
+				ServicioPago pagosService = locatorPagosService.getServicioPagoPort();				GregorianCalendar cal = new GregorianCalendar(2015, 1, 1);
+	            
+				String response  = pagosService.realizarPago(idCompra,nroTarjeta,montoTotal,toXMLGregorianCalendar(cal));
 				
-				String response = (String) pagosService.invoke(sb.toString());
-		        
 				String idComp = obtenerIdCompra("confirmacionPago",response);
 				
-				if (!idComp.isEmpty() || idComp == null) {
+				if (idComp == null || idComp.isEmpty()) {
 					EnvioJMSService locatorEnvioAnulacion = new EnvioJMSService();
 					EnvioJMS envioJms = locatorEnvioAnulacion.getEnvioJMSPort();
 					try {
@@ -183,7 +156,7 @@ public class RecepcionOrdenesCompra implements RecepcionOrdenesCompraInterfaz {
 				}
 				else
 				{	
-					//Aca dio OK
+					//Retornar el OK a el llamado
 					
 				}
 				
@@ -191,11 +164,26 @@ public class RecepcionOrdenesCompra implements RecepcionOrdenesCompraInterfaz {
 			
 		}
 		
-		// Llamo al servio de pagos
-		//PagosServiceLocator locatorPagos = new PagosServiceLocator();
-		//ProxyServicePortType servicioPagos = locatorPagos.getPagosPort();
-		//servicioPagos.invoke();
 		
+		
+	}
+	
+	
+	public static XMLGregorianCalendar toXMLGregorianCalendar(Calendar c)
+			{
+			
+			try {
+				GregorianCalendar gc = new GregorianCalendar();
+				gc.setTimeInMillis(c.getTimeInMillis());
+				XMLGregorianCalendar xc;
+				xc = DatatypeFactory.newInstance().newXMLGregorianCalendar(gc);
+				return xc;
+			} catch (DatatypeConfigurationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return null;
+			
 	}
 	
 	
@@ -221,7 +209,7 @@ public class RecepcionOrdenesCompra implements RecepcionOrdenesCompraInterfaz {
 				Pattern p = Pattern.compile(patronABuscar);
 				 
 				Matcher matcher = p.matcher(xmlContenido);
-				 
+				 String ret="";
 				 System.out.println( "matcher creado") ; 
 				while(matcher.find()){
 						System.out.println( "matcher find entro") ; 
@@ -229,7 +217,9 @@ public class RecepcionOrdenesCompra implements RecepcionOrdenesCompraInterfaz {
 					{
 					  System.out.println( "matcher group encontro") ; 
 					//al ser group(1) devuelve SOLO el valor y no incluye las tags
-						// valoresEtiquetas[i] = matcher.group(1).toString();
+//						 
+					  ret = matcher.group(1).toString();
+//					  valoresEtiquetas[i] = matcher.group(1).toString();
 						 System.out.println( "ewncontro") ;
 					}
 					else {
@@ -238,7 +228,7 @@ public class RecepcionOrdenesCompra implements RecepcionOrdenesCompraInterfaz {
 					}
 				}
 					
-				return "ok- .";
+				return ret;
 			}
 				
 			catch (Exception e) {

@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<wsdl:definitions name="RecepcionOrdenesCompraService" targetNamespace="http://composicion.middleware/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://composicion.middleware/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+<wsdl:definitions name="RecepcionOrdenesCompraService" targetNamespace="http://composicion.middleware/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://composicion.middleware/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
   <wsdl:types>
-    <schema xmlns="http://www.w3.org/2001/XMLSchema">
+<schema xmlns="http://www.w3.org/2001/XMLSchema">
   <import namespace="http://composicion.middleware/" schemaLocation="recepcionordenescompra_schema1.xsd"/>
 </schema>
   </wsdl:types>
+  <wsdl:message name="ServiceException">
+    <wsdl:part name="ServiceException" element="tns:ServiceException">
+    </wsdl:part>
+  </wsdl:message>
   <wsdl:message name="RecibirOrdenResponse">
     <wsdl:part name="parameters" element="tns:RecibirOrdenResponse">
     </wsdl:part>
@@ -19,6 +23,8 @@
     </wsdl:input>
       <wsdl:output name="RecibirOrdenResponse" message="tns:RecibirOrdenResponse">
     </wsdl:output>
+      <wsdl:fault name="ServiceException" message="tns:ServiceException">
+    </wsdl:fault>
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="RecepcionOrdenesCompraServiceSoapBinding" type="tns:RecepcionOrdenesCompraInterfaz">
@@ -31,11 +37,14 @@
       <wsdl:output name="RecibirOrdenResponse">
         <soap:body use="literal"/>
       </wsdl:output>
+      <wsdl:fault name="ServiceException">
+        <soap:fault name="ServiceException" use="literal"/>
+      </wsdl:fault>
     </wsdl:operation>
   </wsdl:binding>
   <wsdl:service name="RecepcionOrdenesCompraService">
     <wsdl:port name="RecepcionOrdenesCompraPort" binding="tns:RecepcionOrdenesCompraServiceSoapBinding">
-      <soap:address location="http://localhost:8080/ComposicionServicios/services/RecepcionOrdenesCompraPort"/>
+      <soap:address location="http://localhost:9090/RecepcionOrdenesCompraPort"/>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

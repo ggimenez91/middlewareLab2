@@ -1,9 +1,6 @@
-<xs:schema xmlns:tns="http://composicion.middleware/" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" targetNamespace="http://composicion.middleware/" version="1.0">
-
+<xs:schema xmlns:tns="http://composicion.middleware/" xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://composicion.middleware/">
   <xs:element name="RecibirOrden" type="tns:RecibirOrden"/>
-
   <xs:element name="RecibirOrdenResponse" type="tns:RecibirOrdenResponse"/>
-
   <xs:complexType name="RecibirOrden">
     <xs:sequence>
       <xs:element minOccurs="0" name="arg0" type="xs:string"/>
@@ -11,7 +8,6 @@
       <xs:element maxOccurs="unbounded" minOccurs="0" name="arg2" type="tns:lineaOrdenCompra"/>
     </xs:sequence>
   </xs:complexType>
-
   <xs:complexType name="lineaOrdenCompra">
     <xs:sequence>
       <xs:element minOccurs="0" name="idProducto" type="xs:long"/>
@@ -19,9 +15,13 @@
       <xs:element name="precioUnitario" type="xs:double"/>
     </xs:sequence>
   </xs:complexType>
-
   <xs:complexType name="RecibirOrdenResponse">
     <xs:sequence/>
   </xs:complexType>
-
+  <xs:element name="ServiceException" type="tns:ServiceException"/>
+  <xs:complexType name="ServiceException">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="message" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
 </xs:schema>
